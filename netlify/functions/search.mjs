@@ -53,6 +53,7 @@ export default async function handler(request) {
     }
 
    
+
 const url = new URL(request.url);
 
 const query = (
@@ -78,18 +79,6 @@ if (
     }
   );
 }
-    answer += "Источник поиска: Truegle";
 
-    return new Response(answer, {
-      status: 200,
-      headers: {
-        "Content-Type": "text/plain; charset=utf-8"
-      }
-    });
-  } catch (error) {
-    return new Response(
-      "Не удалось выполнить поиск. Попробуй ещё раз позже.",
-      { status: 200 }
-    );
   }
 }
