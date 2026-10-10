@@ -86,15 +86,20 @@ export default async function handler(request) {
 
     // /start не является поисковым запросом.
     if (
-      !query ||
-      /^\/start(?:@\w+)?$/i.test(query) ||
-      query.toLowerCase() === "start"
-    ) {
-      return continueChat(
-        "Привет! Я АТЛАС БОТ 🔎\n\n" +
-        "Напиши, что нужно найти. Например: «Почему небо голубое?»"
-      );
+  !query ||
+  /^\/start(?:@\w+)?$/i.test(query.trim()) ||
+  query.trim().toLowerCase() === "start"
+) {
+  return new Response(
+    "Привет! Я АТЛАС БОТ 🔎\n\nНапиши свой вопрос, и я найду информацию.",
+    {
+      status: 422,
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8"
+      }
     }
+  );
+}
 
     const searchResponse = await fetch(
       "https://api.truegle.info/api/search",
