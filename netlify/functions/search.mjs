@@ -71,18 +71,18 @@ export default async function handler(request) {
     // Сначала берём актуальную пользовательскую переменную,
     // а не старое значение из URL.
     const candidates = [
-      data.query,
-      data.variables?.query,
-      data.contact?.query,
-      findQuery(data),
-      url.searchParams.get("query")
-    ];
+  url.searchParams.get("query"),
+  data.query,
+  data.variables?.query,
+  data.contact?.query,
+  findQuery(data)
+];
 
-    const queryValue = candidates.find(
-      value => typeof value === "string" && value.trim()
-    );
+const queryValue = candidates.find(
+  value => typeof value === "string" && value.trim()
+);
 
-    const query = (queryValue || "").trim();
+const query = (queryValue || "").trim();
 
     // /start не является поисковым запросом.
     if (
