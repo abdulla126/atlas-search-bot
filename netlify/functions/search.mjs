@@ -4,6 +4,7 @@ export default async function handler(request) {
     let data = {};
 
     const raw = await request.text();
+    console.log("HTTP BODY:", raw);
 
     try {
       data = JSON.parse(raw);
