@@ -52,7 +52,7 @@ export default async function handler(request) {
       return "";
     }
 
-    const url = new URL(request.url);
+    cconst url = new URL(request.url);
 
 const query = (
   url.searchParams.get("query") ||
