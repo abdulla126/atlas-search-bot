@@ -52,15 +52,16 @@ export default async function handler(request) {
       return "";
     }
 
-    const query =
+    const url = new URL(request.url);
+
+const query = (
+  url.searchParams.get("query") ||
   data.query ||
   data.variables?.query ||
   data.contact?.query ||
-  (request.url
-    ? new URL(request.url).searchParams.get("query")
-    : "") ||
-  findQuery(data);
-
+  findQuery(data)
+).trim();
+    
     if (!query) {
       return new Response(
         "Не получилось получить твой вопрос. Проверь переменную query в CleverApp.",
