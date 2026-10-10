@@ -2,7 +2,10 @@
 export default async function handler(request) {
   try {
     let data = {};
-
+    return new Response("ТЕСТ: NETLIFY РАБОТАЕТ", {
+  status: 200,
+  headers: { "Content-Type": "text/plain; charset=utf-8" }
+});
     const raw = await request.text();
     console.log("HTTP BODY:", raw);
 
