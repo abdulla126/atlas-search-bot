@@ -49,10 +49,13 @@ export default async function handler(request) {
     }
 
     const query =
-      request.url
-        ? new URL(request.url).searchParams.get("query") ||
-          findQuery(data)
-        : findQuery(data);
+  data.query ||
+  data.variables?.query ||
+  data.contact?.query ||
+  (request.url
+    ? new URL(request.url).searchParams.get("query")
+    : "") ||
+  findQuery(data);
 
     if (!query) {
       return new Response(
