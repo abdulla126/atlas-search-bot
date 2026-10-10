@@ -52,7 +52,8 @@ export default async function handler(request) {
       return "";
     }
 
-    cconst url = new URL(request.url);
+   
+const url = new URL(request.url);
 
 const query = (
   url.searchParams.get("query") ||
@@ -61,67 +62,22 @@ const query = (
   data.contact?.query ||
   findQuery(data)
 ).trim();
-    
-    if (!query) {
-      return new Response(
-        "Не получилось получить твой вопрос. Проверь переменную query в CleverApp.",
-        { status: 200 }
-      );
-    }
 
-    const searchResponse = await fetch(
-      "https://api.truegle.info/api/search",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Truegle-Client": "atlas-search-bot"
-        },
-        body: JSON.stringify({
-          query: query.slice(0, 300),
-          mode: "blue-pill",
-          filters: { language: "ru" }
-        })
+if (
+  !query ||
+  query.toLowerCase() === "/start" ||
+  query.toLowerCase() === "start"
+) {
+  return new Response(
+    "Привет! Я АТЛАС БОТ 🔎\nНапиши, что ты хочешь найти.",
+    {
+      status: 200,
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8"
       }
-    );
-
-    if (!searchResponse.ok) {
-      return new Response(
-        "Поиск временно не сработал. Попробуй ещё раз немного позже.",
-        { status: 200 }
-      );
     }
-
-    const result = await searchResponse.json();
-    const results = Array.isArray(result.results)
-      ? result.results.slice(0, 3)
-      : [];
-
-    if (results.length === 0) {
-      return new Response(
-        "По запросу «" + query + "» ничего не найдено. Попробуй задать вопрос иначе.",
-        { status: 200 }
-      );
-    }
-
-    let answer = "🔎 Результаты поиска\n";
-    answer += "Запрос: " + query + "\n\n";
-
-    results.forEach((item, index) => {
-      answer += (index + 1) + ". " +
-        (item.title || "Страница без названия") + "\n";
-
-      if (item.snippet) {
-        answer += item.snippet + "\n";
-      }
-
-      if (item.url) {
-        answer += item.url + "\n";
-      }
-
-      answer += "\n";
-    });
-
+  );
+}
     answer += "Источник поиска: Truegle";
 
     return new Response(answer, {
